@@ -3,7 +3,7 @@
   local_action:
     module: ec2
     region: "{{ region }}"
-    key_name: "{{ keypair_public }}"
+    key_name: "{{ keypair }}"
     instance_type: "{{ ec2_instance_type }}"
     image: "{{ ec2_image }}"
     wait: yes
@@ -27,7 +27,7 @@
   local_action:
     module: ec2
     region: "{{ region }}"
-    key_name: "{{ keypair_private }}"
+    key_name: "{{ keypair }}"
     instance_type: "{{ ec2_instance_type }}"
     image: "{{ ec2_image }}"
     wait: yes
