@@ -4,7 +4,7 @@
   gather_facts: no
   vars_files:
     - vars/{{ env }}.yml
-    - vars/{{ env }}_vpc_info.yml
+    - vars/tmp/{{ env }}_vpc_info.yml
 
   tasks:
 
