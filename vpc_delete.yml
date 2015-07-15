@@ -1,0 +1,18 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files:
+    - vars/{{ env }}.yml
+    - vars/{{ env }}_vpc_info.yml
+
+  tasks:
+
+    - name: delete vpc
+      local_action:
+        module: ec2_vpc
+        region: "{{ region }}"
+        vpc_id: "{{ vpc_id }}"
+        resource_tags: '{"Name":"{{ app }}_{{ env }}_vpc"}'
+        state: absent
+        wait: yes

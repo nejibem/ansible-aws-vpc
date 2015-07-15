@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files:
+    - vars/{{ env }}.yml
+    - vars/{{ env }}_vpc_info.yml
+
+  tasks:
+
+    - debug: msg="vpc_id {{ vpc_id }}"

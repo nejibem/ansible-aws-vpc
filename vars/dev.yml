@@ -1,0 +1,20 @@
+---
+# Enviroment
+env: dev
+app: myapp
+
+# AWS
+region: ap-southeast-2
+az: ap-southeast-2a
+allowed_ip: 118.209.124.147/32
+private_subnet: 10.0.1.0/24
+nat_instance_type: t1.micro
+nat_image: ami-3bae3201
+ec2_instance_type: t2.micro
+ec2_image: ami-bbc5bd81
+keypair_public: "{{ app }}-{{ env }}-keypair-public"
+keypair_private: "{{ app }}-{{ env }}-keypair-private"
+
+# Ansible
+ansible_ssh_user: admin
+ansible_ssh_private_key_file: " ~/.ssh/{{ keypair_public }}.pem"

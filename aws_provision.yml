@@ -1,0 +1,10 @@
+- name: provision web instances
+  hosts: "tag_class_web:&tag_environment_{{ env }}"
+  sudo: yes
+  vars_files:
+    - vars/{{ env }}.yml
+  tasks:
+
+    - name: add keypair web
+      copy: src=~/.ssh/myapp-dev-keypair-private.pem dest=/home/admin/.ssh/myapp-dev-keypair-private.pem mode=0600
+      sudo: false
