@@ -6,6 +6,5 @@
     - vars/{{ env }}.yml
     - vars/tmp/{{ env }}_vpc_info.yml
 
-  tasks:
-
-    - debug: msg="vpc_id {{ vpc_id }}"
+  roles:
+    - aws-create

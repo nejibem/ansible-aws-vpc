@@ -1,0 +1,29 @@
+---  
+- name: create vpc
+  local_action:
+    module: ec2_vpc
+    region: "{{ region }}"
+    cidr_block: 10.0.0.0/16
+    resource_tags: {"Name":"{{ app }}_{{ env }}_vpc"}
+    subnets:
+      - cidr: 10.0.0.0/24
+        az: "{{ az }}"
+        resource_tags: {"Name":"subnet_public"}
+      - cidr: 10.0.1.0/24
+        az: "{{ az }}"
+        resource_tags: {"Name":"subnet_private"}
+    internet_gateway: yes
+    route_tables:
+      - subnets:
+          - 10.0.0.0/24
+        routes:
+          - dest: 0.0.0.0/0
+            gw: igw
+  register: vpc
+
+- name: "write vpc id to {{ app }}_{{ env }}_vpc_info file"
+  local_action: shell echo "vpc_id"":" "{{ vpc.vpc_id }}" > "vars/tmp/{{ env }}_vpc_info.yml"
+
+- name: write subnets id to {{ app }}_{{ env }}_vpc_info file
+  local_action: shell echo "{{ item.resource_tags.Name }}"":" "{{ item.id }}" >> "vars/tmp/{{ env }}_vpc_info.yml"
+  with_items: vpc.subnets

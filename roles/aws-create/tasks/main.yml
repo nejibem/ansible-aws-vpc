@@ -1,0 +1,6 @@
+- include: vpc_create.yml
+- include: sg_empty.yml
+- include: sg_modify.yml
+- include: keypair.yml
+- include: nat_launch.yml
+- include: ec2_create.yml

@@ -1,0 +1,121 @@
+---  
+- name: modify sg_web rules
+  local_action:
+    module: ec2_group
+    region: "{{ region }}"
+    vpc_id: "{{ vpc_id }}"
+    #your security group name
+    name: "{{ app }}_{{ env }}_sg_web"
+    description: security group for webservers
+    rules:
+      # allow ssh access from your ip address
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: "{{ allowed_ip }}"
+      # allow http access from anywhere
+      - proto: tcp
+        from_port: 80
+        to_port: 80
+        cidr_ip: 0.0.0.0/0
+      # allow https access from anywhere
+      - proto: tcp
+        from_port: 443
+        to_port: 443
+        cidr_ip: 0.0.0.0/0
+    rules_egress:
+      # allow http access from anywhere
+      - proto: tcp
+        from_port: 80
+        to_port: 80
+        cidr_ip: 0.0.0.0/0
+      # allow https access from anywhere
+      - proto: tcp
+        from_port: 443
+        to_port: 443
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 3306
+        to_port: 3306
+        group_name: "{{ app }}_{{ env }}_sg_db"
+        group_desc: rules_egress security group for webservers
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        group_name: "{{ app }}_{{ env }}_sg_db"
+
+- name: modify sg_database rules
+  local_action:
+    module: ec2_group
+    region: "{{ region }}"
+    vpc_id: "{{ vpc_id }}"
+    name: "{{ app }}_{{ env }}_sg_db"
+    description: security group for databases
+    rules:
+      - proto: tcp
+        from_port: 3306
+        to_port: 3306
+        group_name: "{{ app }}_{{ env }}_sg_web"
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        group_name: "{{ app }}_{{ env }}_sg_web"
+    rules_egress:
+      - proto: tcp
+        from_port: 80
+        to_port: 80
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 443
+        to_port: 443
+        cidr_ip: 0.0.0.0/0
+
+- name: modify sg_nat rules
+  local_action:
+    module: ec2_group
+    region: "{{ region }}"
+    vpc_id: "{{ vpc_id }}"
+    name: "{{ app }}_{{ env }}_sg_nat"
+    description: security group for nat
+    rules:
+      # allow ssh access from your ip address
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: "{{ allowed_ip }}"
+      # allow http access from private subnet
+      - proto: tcp
+        from_port: 80
+        to_port: 80
+        cidr_ip: "{{ private_subnet }}"
+      # allow https access from private subnet
+      - proto: tcp
+        from_port: 443
+        to_port: 443
+        cidr_ip: "{{ private_subnet }}"
+    rules_egress:
+      - proto: tcp
+        from_port: 80
+        to_port: 80
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 443
+        to_port: 443
+        cidr_ip: 0.0.0.0/0
+
+- name: modify sg_jump rules
+  local_action:
+    module: ec2_group
+    region: "{{ region }}"
+    vpc_id: "{{ vpc_id }}"
+    name: "{{ app }}_{{ env }}_sg_jumpbox"
+    description: security group for jump box
+    rules:
+      # allow ssh access from your ip address
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: "{{ allowed_ip }}"
+    rules_egress:
+      - proto: all
+        cidr_ip: 0.0.0.0/0

@@ -1,0 +1,24 @@
+---  
+- name: create key pair public
+  local_action:
+    module: ec2_key
+    region: "{{ region }}"
+    name: "{{ keypair_public }}"
+  register: mykey
+
+- name: write to file
+  local_action: shell echo "{{ item.value.private_key }}" > ~/.ssh/"{{ keypair_public }}".pem && chmod 600 ~/.ssh/"{{ keypair_public }}".pem
+  with_dict: mykey
+  when: item.value.private_key is defined
+
+- name: create key pair private
+  local_action:
+    module: ec2_key
+    region: "{{ region }}"
+    name: "{{ keypair_private }}"
+  register: mykey
+
+- name: write to file
+  local_action: shell echo "{{ item.value.private_key }}" > ~/.ssh/"{{ keypair_private }}".pem && chmod 600 ~/.ssh/"{{ keypair_private }}".pem
+  with_dict: mykey
+  when: item.value.private_key is defined

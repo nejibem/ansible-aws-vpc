@@ -1,0 +1,2 @@
+- include: sg_delete.yml
+- include: vpc_delete.yml
