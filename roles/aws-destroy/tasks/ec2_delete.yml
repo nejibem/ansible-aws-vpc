@@ -1,0 +1,27 @@
+---
+- name: Gather EC2 facts
+  action: ec2_facts
+
+- debug: msg="{{ ansible_ec2_instance_id }}"
+
+- name: Terminate instances
+  local_action:
+    module: ec2
+    state: absent
+    instance_ids: "{{ ansible_ec2_instance_id }}"
+    region: "{{ region }}"
+    wait: True
+
+
+#- name: terminate instances
+#  local_action:
+#    module: ec2
+#    state: absent
+#    instance_ids: ''
+#
+#- name: associate new EIP for the instance
+#  local_action:
+#    module: ec2_eip
+#    region: "{{ region }}"
+#    instance_id: "{{ item.id }}"
+#  with_items: ec2.instances

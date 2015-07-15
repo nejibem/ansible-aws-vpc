@@ -1,0 +1,11 @@
+---
+- name: provision web instances
+#  hosts: "tag_app_{{ app }}:&tag_environment_{{ env }}:&tag_class_web"
+  hosts: ec2
+  gather_facts: false
+  vars_files:
+    - vars/{{ env }}.yml
+    - vars/tmp/{{ env }}_vpc_info.yml
+
+  roles:
+    - aws-destroy

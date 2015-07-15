@@ -1,2 +1,4 @@
-- include: sg_delete.yml
-- include: vpc_delete.yml
+#- include: ec2_delete.yml
+#- include: sg_delete.yml
+#- include: vpc_delete.yml
+- include: keypair_delete.yml

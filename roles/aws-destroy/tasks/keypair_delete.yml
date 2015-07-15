@@ -1,0 +1,16 @@
+---
+- name: delete key pair public
+  local_action:
+    module: ec2_key
+    region: "{{ region }}"
+    name: "{{ keypair_public }}"
+    state: absent
+  register: mykey
+
+- name: delete key pair private
+  local_action:
+    module: ec2_key
+    region: "{{ region }}"
+    name: "{{ keypair_private }}"
+    state: absent
+  register: mykey
