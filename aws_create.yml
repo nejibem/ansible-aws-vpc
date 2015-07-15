@@ -4,7 +4,6 @@
   gather_facts: no
   vars_files:
     - vars/{{ env }}.yml
-    - vars/tmp/{{ env }}_vpc_info.yml
 
   roles:
     - aws-create
