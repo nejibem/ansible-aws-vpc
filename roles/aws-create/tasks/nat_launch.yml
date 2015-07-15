@@ -9,9 +9,9 @@
     wait: yes
     group: "{{ app }}_{{ env }}_sg_nat"
     instance_tags:
-      Name: "{{ app }}_{{ env }}_nat"
+      app: "{{ app }}"
       class: nat
-      environment: staging
+      environment: "{{ env }}"
     vpc_subnet_id: "{{ subnet_public }}"
     source_dest_check: no
     wait: yes
