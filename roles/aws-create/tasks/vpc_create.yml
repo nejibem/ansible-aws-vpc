@@ -21,9 +21,12 @@
             gw: igw
   register: vpc
 
-- name: "write vpc id to {{ app }}_{{ env }}_vpc_info file"
+- name: "write vpc id to vars/tmp/{{ env }}_vpc_info.yml file"
   local_action: shell echo "vpc_id"":" "{{ vpc.vpc_id }}" > "vars/tmp/{{ env }}_vpc_info.yml"
 
-- name: write subnets id to {{ app }}_{{ env }}_vpc_info file
+- name: write subnets id to vars/tmp/{{ env }}_vpc_info.yml file
   local_action: shell echo "{{ item.resource_tags.Name }}"":" "{{ item.id }}" >> "vars/tmp/{{ env }}_vpc_info.yml"
   with_items: vpc.subnets
+
+- name: load vars from vars/tmp/{{ env }}_vpc_info.yml
+  include_vars: "vars/tmp/{{ env }}_vpc_info.yml"
