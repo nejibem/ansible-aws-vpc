@@ -1,30 +1,27 @@
 ---  
-- name: delete {{ app }}_{{ env }}_sg_web
+- name: create empty security group for webservers
   local_action:
     module: ec2_group
     region: "{{ region }}"
     vpc_id: "{{ vpc_id }}"
     name: "{{ app }}_{{ env }}_sg_web"
     description: security group for webservers
-    state: absent
 
-- name: delete {{ app }}_{{ env }}_sg_db
+- name: create empty security group for databases
   local_action:
     module: ec2_group
     region: "{{ region }}"
     vpc_id: "{{ vpc_id }}"
     name: "{{ app }}_{{ env }}_sg_db"
     description: security group for databases
-    state: absent
 
-- name: delete {{ app }}_{{ env }}_sg_nat
+- name: create empty security group for nat
   local_action:
     module: ec2_group
     region: "{{ region }}"
     vpc_id: "{{ vpc_id }}"
     name: "{{ app }}_{{ env }}_sg_nat"
     description: security group for nat
-    state: absent
 
 - name: create security group for jump box instance
   local_action:
@@ -33,4 +30,3 @@
     vpc_id: "{{ vpc_id }}"
     name: "{{ app }}_{{ env }}_sg_jumpbox"
     description: security group for jump box
-    state: absent
