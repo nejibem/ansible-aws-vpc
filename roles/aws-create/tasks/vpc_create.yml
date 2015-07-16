@@ -16,6 +16,7 @@
     route_tables:
       - subnets:
           - 10.0.0.0/24
+          - 10.0.1.0/24
         routes:
           - dest: 0.0.0.0/0
             gw: igw
